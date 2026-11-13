@@ -1,0 +1,228 @@
+{
+ "versao": 1,
+ "gastos": {
+  "ex001": {
+   "valor": 1200,
+   "descricao": "Aluguel (exemplo)",
+   "categoria": "Moradia",
+   "meio": "pix",
+   "data": "2026-11-05",
+   "pago": true,
+   "para": "Ana",
+   "criadoEm": 1760000000001
+  },
+  "ex002": {
+   "valor": 148.9,
+   "descricao": "Conta de luz (exemplo)",
+   "categoria": "Contas",
+   "meio": "debito",
+   "data": "2026-11-10",
+   "pago": true,
+   "para": "Bruno",
+   "criadoEm": 1760000000002
+  },
+  "ex003": {
+   "valor": 99.9,
+   "descricao": "Internet (exemplo)",
+   "categoria": "Contas",
+   "meio": "debito",
+   "data": "2026-11-12",
+   "pago": false,
+   "para": "Bruno",
+   "criadoEm": 1760000000003
+  },
+  "ex004": {
+   "valor": 420.35,
+   "descricao": "Supermercado (exemplo)",
+   "categoria": "Alimentação",
+   "meio": "va",
+   "data": "2026-11-07",
+   "pago": true,
+   "para": "Carla",
+   "criadoEm": 1760000000004
+  },
+  "ex005": {
+   "valor": 86.5,
+   "descricao": "Feira (exemplo)",
+   "categoria": "Alimentação",
+   "meio": "va",
+   "data": "2026-11-14",
+   "pago": true,
+   "para": "Carla",
+   "criadoEm": 1760000000005
+  },
+  "ex006": {
+   "valor": 180,
+   "descricao": "Combustível (exemplo)",
+   "categoria": "Transporte",
+   "meio": "debito",
+   "data": "2026-11-09",
+   "pago": true,
+   "para": "Ana",
+   "criadoEm": 1760000000006
+  },
+  "ex007": {
+   "valor": 39.9,
+   "descricao": "Streaming (exemplo)",
+   "categoria": "Lazer",
+   "meio": "credito",
+   "data": "2026-11-15",
+   "pago": false,
+   "para": "Ana",
+   "criadoEm": 1760000000007
+  },
+  "ex008": {
+   "valor": 72.4,
+   "descricao": "Farmácia (exemplo)",
+   "categoria": "Saúde",
+   "meio": "pix",
+   "data": "2026-11-11",
+   "pago": true,
+   "para": "Bruno",
+   "criadoEm": 1760000000008
+  },
+  "ex009": {
+   "valor": 89,
+   "descricao": "Curso online (exemplo)",
+   "categoria": "Educação",
+   "meio": "credito",
+   "data": "2026-11-20",
+   "pago": false,
+   "para": "Carla",
+   "criadoEm": 1760000000009
+  },
+  "ex010": {
+   "valor": 250,
+   "descricao": "Notebook (exemplo)",
+   "categoria": "Outros",
+   "meio": "credito",
+   "data": "2026-11-18",
+   "pago": false,
+   "para": "Ana",
+   "criadoEm": 1760000000010,
+   "parcela": 1,
+   "parcelas": 6,
+   "grupo": "ex-notebook"
+  },
+  "ex011": {
+   "valor": 250,
+   "descricao": "Notebook (exemplo)",
+   "categoria": "Outros",
+   "meio": "credito",
+   "data": "2026-12-18",
+   "pago": false,
+   "para": "Ana",
+   "criadoEm": 1760000000011,
+   "parcela": 2,
+   "parcelas": 6,
+   "grupo": "ex-notebook"
+  },
+  "ex012": {
+   "valor": 250,
+   "descricao": "Notebook (exemplo)",
+   "categoria": "Outros",
+   "meio": "credito",
+   "data": "2027-01-18",
+   "pago": false,
+   "para": "Ana",
+   "criadoEm": 1760000000012,
+   "parcela": 3,
+   "parcelas": 6,
+   "grupo": "ex-notebook"
+  },
+  "ex013": {
+   "valor": 250,
+   "descricao": "Notebook (exemplo)",
+   "categoria": "Outros",
+   "meio": "credito",
+   "data": "2027-02-18",
+   "pago": false,
+   "para": "Ana",
+   "criadoEm": 1760000000013,
+   "parcela": 4,
+   "parcelas": 6,
+   "grupo": "ex-notebook"
+  },
+  "ex014": {
+   "valor": 250,
+   "descricao": "Notebook (exemplo)",
+   "categoria": "Outros",
+   "meio": "credito",
+   "data": "2027-03-18",
+   "pago": false,
+   "para": "Ana",
+   "criadoEm": 1760000000014,
+   "parcela": 5,
+   "parcelas": 6,
+   "grupo": "ex-notebook"
+  },
+  "ex015": {
+   "valor": 250,
+   "descricao": "Notebook (exemplo)",
+   "categoria": "Outros",
+   "meio": "credito",
+   "data": "2027-04-18",
+   "pago": false,
+   "para": "Ana",
+   "criadoEm": 1760000000015,
+   "parcela": 6,
+   "parcelas": 6,
+   "grupo": "ex-notebook"
+  },
+  "ex016": {
+   "valor": 1200,
+   "descricao": "Aluguel (exemplo)",
+   "categoria": "Moradia",
+   "meio": "pix",
+   "data": "2026-12-05",
+   "pago": false,
+   "para": "Ana",
+   "criadoEm": 1760000000016
+  },
+  "ex017": {
+   "valor": 155,
+   "descricao": "Conta de luz (exemplo)",
+   "categoria": "Contas",
+   "meio": "debito",
+   "data": "2026-12-10",
+   "pago": false,
+   "para": "Bruno",
+   "criadoEm": 1760000000017
+  }
+ },
+ "receitas": {
+  "exr1": {
+   "valor": 2800,
+   "descricao": "Salário (exemplo)",
+   "tipo": "din",
+   "data": "2026-11-05",
+   "criadoEm": 1760000000100
+  },
+  "exr2": {
+   "valor": 900,
+   "descricao": "Freelance (exemplo)",
+   "tipo": "din",
+   "data": "2026-11-12",
+   "criadoEm": 1760000000101
+  },
+  "exr3": {
+   "valor": 700,
+   "descricao": "Vale-alimentação (exemplo)",
+   "tipo": "va",
+   "data": "2026-11-05",
+   "criadoEm": 1760000000102
+  },
+  "exr4": {
+   "valor": 2800,
+   "descricao": "Salário (exemplo)",
+   "tipo": "din",
+   "data": "2026-12-05",
+   "criadoEm": 1760000000103
+  }
+ },
+ "config": {
+  "base": {
+   "reserva": 1500
+  }
+ }
+}

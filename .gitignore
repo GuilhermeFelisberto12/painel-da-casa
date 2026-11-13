@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.tmp-*
+# dados pessoais nunca vão para o repositório
+dados.json
+CONTAS_.xlsx
+!seed/dados.json

@@ -1,0 +1,46 @@
+{
+  "name": "painel-da-casa",
+  "version": "1.0.0",
+  "description": "Painel da Casa - controle financeiro",
+  "main": "main.js",
+  "author": "Casa",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win portable --x64"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "br.casa.painel",
+    "productName": "Painel da Casa",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "store.js",
+      "xlsx.js",
+      "app/**",
+      "seed/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "Painel-da-Casa.exe"
+    }
+  }
+}
