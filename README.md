@@ -1,134 +1,324 @@
-# Painel da Casa
+<div align="center">
 
-Aplicativo de **controle financeiro para um casal**, para Windows. Lança gastos e recebimentos, mostra um painel com o resumo do mês, separa por forma de pagamento (débito, crédito, Pix e vale-alimentação), controla compras parceladas e gera uma planilha Excel (`CONTAS_.xlsx`) automaticamente a cada lançamento.
+# 💠 Painel da Casa
+
+**Controle financeiro a dois, direto no desktop.**
+Lance gastos e recebimentos, acompanhe o mês em um painel e tenha uma planilha Excel sempre atualizada, sem internet e sem conta em lugar nenhum.
+
+<br>
+
+![Electron](https://img.shields.io/badge/Electron-33-47848F?style=for-the-badge&logo=electron&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-LTS-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?style=for-the-badge&logo=windows11&logoColor=white)
+![Excel](https://img.shields.io/badge/Excel-.xlsx%20autom%C3%A1tico-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white)
+![Offline](https://img.shields.io/badge/100%25-offline-1F2937?style=for-the-badge)
+
+<br>
+
+<img src="docs/resumo.png" alt="Tela de resumo do mês, com dados de exemplo" width="720">
+
+</div>
+
+<br>
 
 > ## ⚠️ Todos os dados deste repositório são fictícios
-> Os nomes (Ana, Bruno e Carla), os valores, as descrições e as datas que aparecem no código, no `seed/dados.json` e neste README são **inventados, apenas para exemplo**. Este repositório **não contém nenhuma informação pessoal ou financeira real**: nenhum nome verdadeiro, conta, saldo, dívida ou lançamento de pessoa alguma.
-> Os arquivos com dados de quem usa o app (`dados.json` e `CONTAS_.xlsx`) ficam só no computador do usuário e estão no `.gitignore`, para nunca serem enviados ao GitHub por engano.
+> Os nomes (**Ana, Bruno e Carla**), os valores, as descrições e as datas que aparecem no código, no `seed/dados.json`, nas imagens e neste README são **inventados, apenas para exemplo**.
+> Este repositório **não contém nenhuma informação pessoal ou financeira real**: nenhum nome verdadeiro, conta, saldo, dívida ou lançamento de pessoa alguma.
+> Os arquivos com dados de quem usa o app (`dados.json` e `CONTAS_.xlsx`) ficam **só no computador do usuário** e estão no `.gitignore`, para nunca serem enviados ao GitHub por engano.
 
-O projeto nasceu como uma página web dentro do Claude (artefato) e foi evoluindo até virar um programa de desktop que funciona sem internet e sem depender de nenhuma conta.
+---
 
-## O que ele faz
+## 📑 Sumário
 
-- **Lançar gastos** com valor, descrição, categoria, forma de pagamento, data, para quem passar (cada pessoa da casa) e situação (já pago ou a pagar).
-- **Compras parceladas**: informa o total (ou o valor da parcela) e o número de parcelas; o app cria uma parcela por mês nos meses seguintes. Ao apagar, dá para remover só uma parcela ou todas.
-- **Recebimentos lançados manualmente**, porque o valor muda todo mês. Podem ser em dinheiro ou em vale-alimentação.
-- **Resumo do mês**: quanto ainda cabe, quanto falta pagar, total por forma de pagamento, por categoria, por pessoa, parcelas dos próximos meses e comparação mês a mês.
-- **Conselhos financeiros** baseados em boas práticas (por exemplo, regra 50/30/20, reserva de emergência, peso das parcelas na renda), calculados a partir dos lançamentos.
-- **Histórico** com abas por forma de pagamento, filtro "A pagar", marcar como pago e trocar a forma de pagamento sem apagar o lançamento.
-- **Planilha Excel automática**: a cada alteração o app regenera o `CONTAS_.xlsx` com todos os lançamentos, resumo mensal por categoria e menus de listas.
-- **Uso a dois**: os dados ficam numa pasta sincronizada (por exemplo OneDrive); cada pessoa usa o app no seu computador.
+- [✨ O que ele faz](#-o-que-ele-faz)
+- [🖼️ Telas](#️-telas)
+- [🧰 Tecnologias](#-tecnologias)
+- [🏗️ Arquitetura](#️-arquitetura)
+- [🧠 Decisões de projeto](#-decisões-de-projeto)
+- [🗂️ Modelo de dados](#️-modelo-de-dados)
+- [📁 Estrutura do projeto](#-estrutura-do-projeto)
+- [🚀 Como usar](#-como-usar)
+- [🩺 Problemas comuns](#-problemas-comuns)
+- [⚠️ Limitações](#️-limitações)
+- [🔒 Privacidade](#-privacidade)
+- [🕰️ Histórico do projeto](#️-histórico-do-projeto)
 
-## Tecnologias
+---
 
-| Parte | Tecnologia |
-|---|---|
-| Aplicativo desktop | [Electron](https://www.electronjs.org/) (processo principal, `preload` e `contextBridge`) |
-| Interface | HTML, CSS e JavaScript puro (sem framework), SVG para os gráficos |
-| Empacotamento | [electron-builder](https://www.electron.build/) (executável portátil `.exe`) |
-| Armazenamento | Arquivo JSON local (`dados.json`) com escrita atômica |
-| Planilha | Gerador próprio de `.xlsx` em JavaScript (Office Open XML + ZIP), sem bibliotecas |
-| Plataforma | Node.js e Windows |
+## ✨ O que ele faz
 
-## Como funciona
+| | Recurso | Detalhe |
+|---|---|---|
+| 🧾 | **Lançar gastos** | Valor, descrição, categoria, forma de pagamento, data, para quem passar e situação (já pago ou a pagar). |
+| 💳 | **Formas de pagamento** | Débito, crédito, Pix e vale-alimentação, com abas separadas no histórico. É possível trocar a forma depois, sem apagar o lançamento. |
+| 🔁 | **Compras parceladas** | Informe o total (ou o valor da parcela) e o número de parcelas: o app cria uma parcela por mês nos meses seguintes. Ao apagar, remove só uma parcela ou todas. |
+| 💵 | **Recebimentos manuais** | Lançados mês a mês, porque o valor varia. Em dinheiro ou em vale-alimentação. |
+| 📊 | **Resumo do mês** | Quanto ainda cabe, quanto falta pagar, totais por forma de pagamento, por categoria e por pessoa, parcelas dos próximos meses e comparação mês a mês. |
+| 🧭 | **Conselhos financeiros** | Dicas baseadas em boas práticas (peso das parcelas na renda, reserva de emergência, "pague-se primeiro", limites por categoria), calculadas a partir dos lançamentos. |
+| ✅ | **Controle de pagamento** | Marque cada conta como paga ou a pagar e veja o que ainda falta no mês. |
+| 📗 | **Planilha automática** | A cada alteração, o app regenera o `CONTAS_.xlsx` com todos os lançamentos, o resumo mensal por categoria e menus de listas. |
+| 👥 | **Uso a dois** | Os dados ficam numa pasta sincronizada (por exemplo, OneDrive); cada pessoa usa o app no seu computador. |
 
+---
+
+## 🖼️ Telas
+
+<table>
+  <tr>
+    <td align="center"><b>Lançar</b><br><sub>gasto ou recebimento, com parcelas</sub></td>
+    <td align="center"><b>Histórico</b><br><sub>abas por forma de pagamento</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/lancar.png" alt="Tela de lançamento" width="420"></td>
+    <td><img src="docs/historico.png" alt="Tela de histórico filtrada por crédito" width="420"></td>
+  </tr>
+</table>
+
+<sub>Capturas feitas com os dados fictícios de `seed/dados.json`.</sub>
+
+---
+
+## 🧰 Tecnologias
+
+| Camada | Tecnologia | Para quê |
+|---|---|---|
+| 🖥️ Desktop | [Electron](https://www.electronjs.org/) | Janela do app, menu, acesso à pasta de dados; `preload` com `contextBridge` e janela isolada (`contextIsolation`, `sandbox`). |
+| 🎨 Interface | HTML, CSS e JavaScript puro | Telas sem framework; gráficos em SVG. |
+| 📦 Empacotamento | [electron-builder](https://www.electron.build/) | Gera um executável portátil (`.exe`) que não precisa de instalação. |
+| 💾 Armazenamento | Arquivo JSON local | Banco de dados simples, com escrita atômica. |
+| 📗 Planilha | Gerador próprio de `.xlsx` | Office Open XML + ZIP escritos à mão, sem bibliotecas. |
+| ⚙️ Runtime | [Node.js](https://nodejs.org/) | Processo principal e ferramentas de build. |
+
+---
+
+## 🏗️ Arquitetura
+
+```mermaid
+flowchart TB
+    subgraph R["🪟 Janela (renderer)"]
+        UI["app/index.html<br/>Resumo · Lançar · Histórico"]
+        SH["app/shim.js<br/>banco de documentos local"]
+        UI <--> SH
+    end
+
+    PL["preload.js<br/>contextBridge: load / apply"]
+
+    subgraph M["⚙️ Processo principal"]
+        MA["main.js<br/>janela, menu, pasta de dados"]
+        ST["store.js<br/>lê e grava os dados"]
+        XL["xlsx.js<br/>gera a planilha"]
+        MA --> ST --> XL
+    end
+
+    subgraph D["📂 Pasta de dados (ex.: OneDrive)"]
+        J[("dados.json<br/>banco de dados")]
+        X[["CONTAS_.xlsx<br/>gerada automaticamente"]]
+    end
+
+    SH <-->|IPC| PL <-->|IPC| MA
+    ST <--> J
+    XL --> X
 ```
-┌────────────── Janela (renderer) ──────────────┐
-│  app/index.html  (telas Resumo / Lançar /     │
-│                   Histórico)                  │
-│  app/shim.js     (banco de dados "de mentira" │
-│                   que fala com o app)         │
-└──────────────┬────────────────────────────────┘
-               │ preload.js (contextBridge)  load / apply
-┌──────────────▼────────────────────────────────┐
-│  main.js  (janela, menu, escolha da pasta)    │
-│  store.js (lê e grava dados.json,             │
-│            regenera CONTAS_.xlsx)             │
-│  xlsx.js  (gerador de planilha .xlsx)         │
-└──────────────┬────────────────────────────────┘
-               ▼
-   <pasta de dados>/dados.json   ← banco de dados
-   <pasta de dados>/CONTAS_.xlsx ← gerada automaticamente
+
+### Fluxo de um lançamento
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as Pessoa
+    participant T as Tela
+    participant S as shim.js
+    participant P as store.js
+    participant F as Pasta de dados
+
+    U->>T: Lança um gasto
+    T->>S: doc.set(dados)
+    S->>S: atualiza a tela na hora
+    S->>P: apply([{ op: set, path, data }])
+    P->>F: relê dados.json
+    P->>F: aplica a operação e grava (atômico)
+    P->>F: regenera CONTAS_.xlsx
+    P-->>S: estado atualizado
+    S-->>T: redesenha com o que está no disco
 ```
 
-### Decisões de projeto
+---
 
-- **Reaproveitar a interface original.** A tela foi escrita para o ambiente do Claude, que oferece um banco de documentos (`collection`, `doc`, `onSnapshot`). Em vez de reescrever, o `app/shim.js` implementa essa mesma interface em cima do armazenamento local. Assim a tela funciona igual nos dois ambientes.
-- **Operações em vez de "salvar tudo".** Cada alteração é enviada como uma operação (`set`, `update`, `delete`). O `store.js` relê o arquivo antes de aplicar, para não apagar o que a outra pessoa lançou enquanto o app estava aberto. A janela também relê os dados ao voltar ao foco e a cada 30 segundos.
-- **Escrita atômica.** O arquivo é gravado em um temporário e renomeado, para não corromper os dados se o computador desligar no meio.
-- **Planilha sem biblioteca.** O `xlsx.js` monta o arquivo Office Open XML e o ZIP à mão (tabela do Excel, validações de lista, formatação condicional, fórmulas `SUMIFS` com o valor já calculado). O resultado foi conferido recalculando no LibreOffice.
-- **Sem sobrescrever nada à mão.** O `dados.json` é a fonte da verdade e a planilha é sempre gerada a partir dele.
+## 🧠 Decisões de projeto
 
-### Modelo de dados (`dados.json`)
+<details>
+<summary><b>♻️ Reaproveitar a interface original</b></summary>
+
+A tela foi criada para rodar dentro do Claude, que oferece um banco de documentos (`collection`, `doc`, `onSnapshot`). Em vez de reescrever, o `app/shim.js` implementa essa mesma interface em cima do armazenamento local. Assim, a tela funciona igual nos dois ambientes.
+</details>
+
+<details>
+<summary><b>🧩 Operações em vez de "salvar tudo"</b></summary>
+
+Cada alteração é enviada como uma operação (`set`, `update`, `delete`). O `store.js` **relê o arquivo antes de aplicar**, para não apagar o que a outra pessoa lançou enquanto o app estava aberto. A janela também relê os dados quando volta ao foco e a cada 30 segundos.
+</details>
+
+<details>
+<summary><b>🛡️ Escrita atômica</b></summary>
+
+O arquivo é gravado em um temporário e depois renomeado, para não corromper os dados se o computador desligar no meio da gravação.
+</details>
+
+<details>
+<summary><b>📗 Planilha sem biblioteca</b></summary>
+
+O `xlsx.js` monta o arquivo Office Open XML e o ZIP manualmente: tabela do Excel, validações de lista, formatação condicional e fórmulas `SUMIFS` já com o valor calculado. O resultado foi conferido recalculando a planilha no LibreOffice, comparando com os valores gravados.
+</details>
+
+<details>
+<summary><b>🚫 Nada de sobrescrever à mão</b></summary>
+
+O `dados.json` é a fonte da verdade e a planilha é sempre gerada a partir dele. Ninguém precisa editar nem mesclar o Excel.
+</details>
+
+---
+
+## 🗂️ Modelo de dados
+
+O arquivo `dados.json` tem três coleções:
 
 ```json
 {
   "versao": 1,
   "gastos": {
-    "<id>": {
-      "valor": 324, "descricao": "Celular", "categoria": "Outros",
-      "meio": "credito", "data": "2026-12-08", "pago": false,
-      "para": "Ana", "parcela": 1, "parcelas": 10, "grupo": "<id do parcelamento>"
+    "ex001": {
+      "valor": 250,
+      "descricao": "Notebook (exemplo)",
+      "categoria": "Outros",
+      "meio": "credito",
+      "data": "2026-11-18",
+      "pago": false,
+      "para": "Ana",
+      "parcela": 1,
+      "parcelas": 6,
+      "grupo": "ex-notebook"
     }
   },
   "receitas": {
-    "<id>": { "valor": 1400, "descricao": "Salário", "tipo": "din", "data": "2026-11-05" }
+    "exr1": { "valor": 2800, "descricao": "Salário (exemplo)", "tipo": "din", "data": "2026-11-05" }
   },
-  "config": { "base": { "reserva": 0 } }
+  "config": { "base": { "reserva": 1500 } }
 }
 ```
 
-`meio` pode ser `debito`, `credito`, `pix` ou `va`. Um lançamento com `tipo: "ajuste"` é um abatimento (valor negativo) que não entra nas categorias.
+| Campo | Valores |
+|---|---|
+| `meio` | `debito`, `credito`, `pix`, `va` (vale-alimentação) |
+| `categoria` | Moradia, Contas, Alimentação, Transporte, Saúde, Lazer, Educação, Dívidas, Outros, Reserva |
+| `tipo` (recebimento) | `din` (dinheiro) ou `va` (vale-alimentação) |
+| `tipo: "ajuste"` (gasto) | abatimento com valor negativo, que não entra nas categorias |
+| `grupo` | liga as parcelas de uma mesma compra |
 
-## Estrutura do projeto
+---
+
+## 📁 Estrutura do projeto
 
 ```
-main.js       processo principal do Electron
-preload.js    ponte segura entre a janela e o processo principal
-store.js      leitura/escrita do dados.json e geração da planilha
-xlsx.js       gerador de .xlsx
-app/          interface (index.html e shim.js)
-seed/         dados de exemplo (fictícios), copiados na primeira execução
-package.json  scripts e configuração do electron-builder
+painel-da-casa/
+├── main.js          processo principal do Electron (janela, menu, pasta de dados)
+├── preload.js       ponte segura entre a janela e o processo principal
+├── store.js         leitura/escrita do dados.json e geração da planilha
+├── xlsx.js          gerador de .xlsx (Office Open XML + ZIP)
+├── app/
+│   ├── index.html   interface (Resumo, Lançar, Histórico)
+│   └── shim.js      banco de documentos local usado pela interface
+├── seed/
+│   └── dados.json   dados de exemplo (fictícios), copiados na primeira execução
+├── docs/            capturas de tela usadas neste README
+└── package.json     scripts e configuração do electron-builder
 ```
 
-## Como usar
+---
 
-Requisitos: [Node.js](https://nodejs.org/) (LTS) no Windows.
+## 🚀 Como usar
+
+**Requisito:** [Node.js](https://nodejs.org/) (versão LTS) no Windows.
 
 ```bash
-npm install
+npm install        # instala as dependências
 npm start          # abre o app em modo de teste
 npm run build      # gera dist/Painel-da-Casa.exe (portátil, não precisa instalar)
 ```
 
-Os dados ficam em `C:\Users\<usuário>\OneDrive\Documentos\Contas a Pagar` (ou em `Documentos\Contas a Pagar`, se não houver OneDrive). O caminho aparece na barra de título, e o menu **Arquivo > Escolher outra pasta de dados** permite trocar.
+### Onde ficam os dados
 
-### Problemas comuns
+`C:\Users\<usuário>\OneDrive\Documentos\Contas a Pagar` (ou `Documentos\Contas a Pagar`, se não houver OneDrive). O caminho aparece na barra de título, e o menu **Arquivo → Escolher outra pasta de dados** permite trocar.
 
-- **Erro de link simbólico ou permissão no `npm run build`:** ative o Modo de Desenvolvedor do Windows ou rode o terminal como administrador.
-- **Aviso do SmartScreen ao abrir o `.exe`:** é esperado, o programa não tem assinatura digital. Clique em "Mais informações" e "Executar assim mesmo".
-- **Planilha aberta no Excel:** o lançamento é salvo, mas a planilha só é atualizada depois que você fechar o arquivo e lançar de novo.
+| Arquivo | Função |
+|---|---|
+| `dados.json` | O banco de dados. Não apague nem edite. |
+| `CONTAS_.xlsx` | A planilha, regenerada sozinha a cada lançamento. Abra só para consultar. |
 
-## Limitações
+### Começar do zero (sem os exemplos)
+
+Antes de gerar o `.exe`, troque o conteúdo de `seed/dados.json` por:
+
+```json
+{ "versao": 1, "gastos": {}, "receitas": {}, "config": {} }
+```
+
+Se o app já tiver criado a pasta de dados com os exemplos, apague-os pelo próprio app (aba **Histórico → Apagar**), ou troque o conteúdo do `dados.json` da pasta de dados pelo JSON acima com o app fechado. (Apagar o arquivo faz o app copiar os exemplos de novo.)
+
+### Uso a dois
+
+Cada pessoa usa o app no seu computador, apontando para a mesma pasta sincronizada. Ao voltar para a janela, o app relê o arquivo. Evite lançar ao mesmo tempo e deixe o OneDrive terminar de sincronizar antes de abrir.
+
+### Personalizar os nomes
+
+Os nomes do campo "Passar para" estão no código (`Ana`, `Bruno` e `Carla`, fictícios). Troque a constante `PARA` em `app/index.html` e a lista `PARAL` em `xlsx.js`. Se já houver dados, ajuste também o campo `para` no `dados.json`.
+
+---
+
+## 🩺 Problemas comuns
+
+| Sintoma | O que fazer |
+|---|---|
+| Erro de *link simbólico* ou permissão no `npm run build` | Ative o **Modo de Desenvolvedor** do Windows ou rode o terminal como administrador. |
+| `npm` não é reconhecido | Instale o Node.js e **reabra** o terminal (ou o VS Code) para atualizar o PATH. |
+| Aviso azul do SmartScreen ao abrir o `.exe` | Esperado: o programa não tem assinatura digital. Clique em **Mais informações → Executar assim mesmo**. |
+| "Planilha aberta no Excel" | O lançamento é salvo, mas a planilha só atualiza depois que você fechar o arquivo e lançar de novo. |
+
+---
+
+## ⚠️ Limitações
 
 - Alterações feitas direto no Excel **não voltam** para o app: a planilha é só para consulta.
 - Duas pessoas lançando ao mesmo tempo em computadores diferentes podem gerar conflito de sincronização do OneDrive.
-- Os nomes do campo "Passar para" estão fixos no código (`Ana`, `Bruno` e `Carla`, nomes fictícios). Para usar os nomes da sua casa, troque a constante `PARA` em `app/index.html` e a lista `PARAL` em `xlsx.js` (e, se já tiver dados, o campo `para` no `dados.json`).
-- Sem assinatura digital e sem atualização automática.
+- Sem assinatura digital do executável e sem atualização automática.
+- Os conselhos são sugestões gerais e **não** substituem uma recomendação financeira personalizada.
 
-## Privacidade
+---
 
-Os dados de exemplo do `seed/dados.json` são fictícios. Para começar com o app vazio, troque o conteúdo desse arquivo por `{"versao":1,"gastos":{},"receitas":{},"config":{}}` antes de gerar o `.exe`, ou apague os exemplos pelo próprio app.
+## 🔒 Privacidade
 
-Os dados não saem do computador: não há servidor, conta nem telemetria. O `.gitignore` impede que `dados.json` e `CONTAS_.xlsx` sejam enviados ao repositório.
+- Não há servidor, conta, login nem telemetria: os dados nunca saem do computador, a não ser pela pasta sincronizada que você escolher.
+- O `.gitignore` impede o envio de `dados.json` e `CONTAS_.xlsx` para o repositório.
+- Os dados de `seed/dados.json` são fictícios.
 
-## Histórico do projeto
+---
 
-1. Planilha de Excel simples para gastos do casal.
-2. Página web privada com painel, categorias e conselhos.
-3. Parcelamentos, formas de pagamento separadas e importação da planilha existente.
-4. Recebimentos manuais e exportação para `.xlsx`.
-5. Este aplicativo desktop, com armazenamento local e planilha automática.
+## 🕰️ Histórico do projeto
 
-Desenvolvido com apoio do Claude (Anthropic).
+```mermaid
+timeline
+    title Da planilha ao app
+    Planilha : Excel simples para os gastos do casal
+    Painel web : Página privada com categorias e conselhos
+    Parcelas : Formas de pagamento separadas e compras parceladas
+    Planilha como base : Importação das contas e exportação para .xlsx
+    App desktop : Armazenamento local e planilha automática
+```
+
+---
+
+<div align="center">
+
+Desenvolvido com apoio do [Claude](https://claude.ai) (Anthropic).
+
+</div>
