@@ -1,9 +1,6 @@
 <div align="center">
 
-# 💠 Painel da Casa
-
-**Controle financeiro a dois, direto no desktop.**
-Lance gastos e recebimentos, acompanhe o mês em um painel e tenha uma planilha Excel sempre atualizada, sem internet e sem conta em lugar nenhum.
+<img src="docs/banner.svg" alt="Painel da Casa: controle financeiro a dois, direto no desktop" width="100%">
 
 <br>
 
@@ -17,6 +14,8 @@ Lance gastos e recebimentos, acompanhe o mês em um painel e tenha uma planilha 
 <br>
 
 <img src="docs/resumo.png" alt="Tela de resumo do mês, com dados de exemplo" width="720">
+
+<sub>🌐 Também há uma **página do projeto** com fundo em degradê em [`docs/index.html`](docs/index.html) (veja abaixo como publicá-la).</sub>
 
 </div>
 
@@ -230,7 +229,7 @@ painel-da-casa/
 │   └── shim.js      banco de documentos local usado pela interface
 ├── seed/
 │   └── dados.json   dados de exemplo (fictícios), copiados na primeira execução
-├── docs/            capturas de tela usadas neste README
+├── docs/            banner, capturas de tela e a página do projeto (index.html)
 └── package.json     scripts e configuração do electron-builder
 ```
 
@@ -272,6 +271,12 @@ Cada pessoa usa o app no seu computador, apontando para a mesma pasta sincroniza
 ### Personalizar os nomes
 
 Os nomes do campo "Passar para" estão no código (`Ana`, `Bruno` e `Carla`, fictícios). Troque a constante `PARA` em `app/index.html` e a lista `PARAL` em `xlsx.js`. Se já houver dados, ajuste também o campo `para` no `dados.json`.
+
+---
+
+## 🌐 Página do projeto
+
+O arquivo [`docs/index.html`](docs/index.html) é uma página estática (sem animações) que apresenta o projeto. Para publicá-la no GitHub Pages: **Settings → Pages → Build and deployment → Source: *Deploy from a branch* → Branch: `main` / pasta `/docs` → Save**. Depois de alguns minutos ela fica em `https://<usuário>.github.io/painel-da-casa/`.
 
 ---
 

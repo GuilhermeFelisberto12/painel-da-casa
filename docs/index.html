@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel da Casa · controle financeiro a dois</title>
+<meta name="description" content="App de desktop para controle financeiro a dois: gastos, recebimentos, parcelas e planilha Excel automática. Todos os dados de exemplo são fictícios.">
+<style>
+:root {
+  --bg: #0b1020;
+  --ink: #eef2ff;
+  --muted: #a5b0c8;
+  --line: rgba(255,255,255,.12);
+  --glass: rgba(255,255,255,.055);
+  --c1: #7dd3fc; --c2: #a78bfa; --c3: #f0abfc;
+  --ok: #86efac;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body {
+  margin: 0; color: var(--ink); background-color: var(--bg);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif; line-height: 1.6;
+  background-image:
+    radial-gradient(900px 520px at 8% -6%, rgba(109,74,255,.42), transparent 70%),
+    radial-gradient(800px 480px at 96% 4%, rgba(6,182,212,.30), transparent 70%),
+    radial-gradient(900px 600px at 70% 62%, rgba(236,72,153,.13), transparent 70%),
+    radial-gradient(800px 500px at 10% 92%, rgba(14,165,233,.16), transparent 70%),
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: auto, auto, auto, auto, 44px 44px, 44px 44px;
+  background-attachment: fixed;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+a { color: var(--c1); }
+header.top { padding: 22px 0 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .2px; }
+.dot { width: 14px; height: 14px; border-radius: 50%; background: linear-gradient(135deg, var(--c1), var(--c2)); box-shadow: 0 0 0 4px rgba(125,211,252,.14); }
+nav a { color: var(--muted); text-decoration: none; margin-left: 18px; font-size: .95rem; }
+nav a:hover { color: var(--ink); }
+.hero { padding: 64px 0 36px; text-align: center; }
+.eyebrow { display: inline-block; padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--glass); color: var(--muted); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+h1 { font-size: clamp(2.6rem, 8vw, 5rem); line-height: 1.05; margin: 22px 0 14px; font-weight: 800; letter-spacing: -.02em;
+  background: linear-gradient(90deg, var(--c1), var(--c2) 55%, var(--c3)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { max-width: 680px; margin: 0 auto; font-size: clamp(1.05rem, 2.4vw, 1.3rem); color: #d6dcf0; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 28px 0 0; }
+.chip { padding: 7px 15px; border-radius: 999px; border: 1px solid var(--line); background: var(--glass); font-size: .92rem; font-weight: 600; }
+.cta { margin-top: 30px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn { display: inline-block; padding: 12px 22px; border-radius: 14px; font-weight: 700; text-decoration: none; border: 1px solid var(--line); color: var(--ink); background: var(--glass); }
+.btn.main { background: linear-gradient(135deg, #38bdf8, #8b5cf6); border-color: transparent; color: #0b1020; }
+.shot { margin: 46px auto 0; max-width: 760px; padding: 10px; border-radius: 26px; border: 1px solid var(--line); background: var(--glass); box-shadow: 0 40px 120px rgba(99,102,241,.35), 0 0 0 1px rgba(255,255,255,.04) inset; }
+.shot img { display: block; width: 100%; height: auto; border-radius: 18px; }
+.notice { margin: 34px auto 0; max-width: 820px; padding: 18px 22px; border-radius: 18px; border: 1px solid rgba(250,204,21,.45); background: rgba(250,204,21,.09); color: #fde68a; text-align: left; }
+.notice b { color: #fef08a; }
+section { padding: 56px 0 8px; }
+h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 6px; letter-spacing: -.01em; }
+.sub { color: var(--muted); margin: 0 0 26px; max-width: 700px; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.card { padding: 22px; border-radius: 20px; border: 1px solid var(--line); background: var(--glass); backdrop-filter: blur(6px); }
+.card .ico { font-size: 1.6rem; display: block; margin-bottom: 8px; }
+.card h3 { margin: 0 0 6px; font-size: 1.08rem; }
+.card p { margin: 0; color: var(--muted); font-size: .96rem; }
+.gallery { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.gallery figure { margin: 0; padding: 10px; border-radius: 22px; border: 1px solid var(--line); background: var(--glass); }
+.gallery img { display: block; width: 100%; height: auto; border-radius: 14px; }
+.gallery figcaption { padding: 10px 6px 4px; color: var(--muted); font-size: .92rem; }
+.gallery figcaption b { color: var(--ink); }
+.flow { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); align-items: stretch; }
+.node { padding: 16px; border-radius: 18px; border: 1px solid var(--line); background: var(--glass); position: relative; }
+.node small { display: block; color: var(--muted); font-size: .85rem; margin-top: 4px; }
+.node code { color: var(--c1); }
+.node.data { border-color: rgba(134,239,172,.4); background: rgba(134,239,172,.07); }
+.tech-wrap { overflow-x: auto; border-radius: 18px; }
+.tech { min-width: 520px; width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--glass); }
+.tech th, .tech td { padding: 13px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); font-size: .96rem; }
+.tech tr:last-child td { border-bottom: 0; }
+.tech th { color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: .78rem; background: rgba(255,255,255,.04); }
+pre { margin: 0; padding: 20px 22px; border-radius: 18px; border: 1px solid var(--line); background: rgba(3,7,18,.7); overflow-x: auto; color: #dbeafe; font: .95rem/1.7 ui-monospace, "Cascadia Code", Consolas, monospace; }
+pre .c { color: #7c8aa8; }
+.two { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+ul.clean { margin: 0; padding-left: 20px; color: var(--muted); }
+ul.clean li { margin: 6px 0; }
+footer { margin-top: 64px; padding: 30px 0 48px; border-top: 1px solid var(--line); color: var(--muted); text-align: center; font-size: .92rem; }
+code { overflow-wrap: anywhere; }
+@media (max-width: 560px) { nav { display: none; } .hero { padding-top: 40px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand"><span class="dot" aria-hidden="true"></span> Painel da Casa</div>
+    <nav aria-label="Seções">
+      <a href="#recursos">Recursos</a><a href="#telas">Telas</a><a href="#arquitetura">Arquitetura</a><a href="#tecnologias">Tecnologias</a><a href="#usar">Como usar</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <span class="eyebrow">App de desktop · Windows</span>
+      <h1>Painel da Casa</h1>
+      <p class="lead">Controle financeiro a dois, direto no desktop. Lance gastos e recebimentos, acompanhe o mês em um painel e tenha uma planilha Excel sempre atualizada, sem internet e sem conta em lugar nenhum.</p>
+      <div class="chips">
+        <span class="chip">Electron</span><span class="chip">Node.js</span><span class="chip">JavaScript</span><span class="chip">Office Open XML</span><span class="chip">100% offline</span>
+      </div>
+      <div class="cta">
+        <a class="btn main" href="#usar">Como usar</a>
+        <a class="btn" href="https://github.com/GuilhermeFelisberto12/painel-da-casa">Ver o código no GitHub</a>
+      </div>
+      <div class="shot"><img src="resumo.png" alt="Tela de resumo do mês, com dados de exemplo"></div>
+      <div class="notice"><b>Todos os dados são fictícios.</b> Os nomes (Ana, Bruno e Carla), os valores, as descrições e as datas deste site, das imagens e do código são inventados, só para exemplo. O projeto não contém nenhuma informação pessoal ou financeira real.</div>
+    </div>
+
+    <section id="recursos">
+      <h2>O que ele faz</h2>
+      <p class="sub">Um painel simples para a rotina financeira de uma casa, com o que importa no dia a dia.</p>
+      <div class="grid">
+        <div class="card"><span class="ico">🧾</span><h3>Lançar gastos</h3><p>Valor, descrição, categoria, forma de pagamento, data, para quem passar e situação (já pago ou a pagar).</p></div>
+        <div class="card"><span class="ico">💳</span><h3>Formas de pagamento</h3><p>Débito, crédito, Pix e vale-alimentação, com abas separadas. A forma pode ser trocada depois, sem apagar o lançamento.</p></div>
+        <div class="card"><span class="ico">🔁</span><h3>Compras parceladas</h3><p>Informe o total ou o valor da parcela: o app cria uma parcela por mês nos meses seguintes.</p></div>
+        <div class="card"><span class="ico">💵</span><h3>Recebimentos manuais</h3><p>Lançados mês a mês, porque o valor varia. Em dinheiro ou em vale-alimentação.</p></div>
+        <div class="card"><span class="ico">📊</span><h3>Resumo do mês</h3><p>Quanto ainda cabe, quanto falta pagar, totais por categoria e por pessoa, parcelas futuras e comparação mês a mês.</p></div>
+        <div class="card"><span class="ico">🧭</span><h3>Conselhos financeiros</h3><p>Dicas de boas práticas calculadas a partir dos lançamentos: peso das parcelas, reserva de emergência e limites por categoria.</p></div>
+        <div class="card"><span class="ico">📗</span><h3>Planilha automática</h3><p>A cada alteração, o app regenera o <code>CONTAS_.xlsx</code> com lançamentos, resumo mensal e menus de listas.</p></div>
+        <div class="card"><span class="ico">👥</span><h3>Uso a dois</h3><p>Os dados ficam numa pasta sincronizada (como o OneDrive); cada pessoa usa o app no seu computador.</p></div>
+      </div>
+    </section>
+
+    <section id="telas">
+      <h2>Telas</h2>
+      <p class="sub">Capturas feitas com os dados fictícios do projeto.</p>
+      <div class="gallery">
+        <figure><img src="lancar.png" alt="Tela de lançamento de gasto"><figcaption><b>Lançar</b> · gasto ou recebimento, com parcelas</figcaption></figure>
+        <figure><img src="historico.png" alt="Tela de histórico filtrada por crédito"><figcaption><b>Histórico</b> · abas por forma de pagamento</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="arquitetura">
+      <h2>Arquitetura</h2>
+      <p class="sub">A interface foi feita para rodar dentro do Claude. Uma camada de compatibilidade (<code>shim.js</code>) a liga ao armazenamento local, sem reescrever a tela.</p>
+      <div class="flow">
+        <div class="node"><b>Janela</b><small><code>app/index.html</code><br>Resumo · Lançar · Histórico</small></div>
+        <div class="node"><b>Camada local</b><small><code>app/shim.js</code><br>banco de documentos em memória</small></div>
+        <div class="node"><b>Ponte segura</b><small><code>preload.js</code><br>contextBridge: load / apply</small></div>
+        <div class="node"><b>Processo principal</b><small><code>main.js</code> · <code>store.js</code> · <code>xlsx.js</code></small></div>
+        <div class="node data"><b>Pasta de dados</b><small><code>dados.json</code> (banco)<br><code>CONTAS_.xlsx</code> (gerada sozinha)</small></div>
+      </div>
+      <div class="two" style="margin-top:16px">
+        <div class="card"><h3>Operações, não "salvar tudo"</h3><p>Cada alteração vira uma operação (<code>set</code>, <code>update</code>, <code>delete</code>). O armazenamento relê o arquivo antes de aplicar, para não apagar o que a outra pessoa lançou.</p></div>
+        <div class="card"><h3>Escrita atômica</h3><p>O arquivo é gravado em um temporário e depois renomeado, para não corromper os dados se o computador desligar no meio.</p></div>
+        <div class="card"><h3>Planilha sem biblioteca</h3><p>O <code>xlsx.js</code> monta o Office Open XML e o ZIP à mão, com tabela do Excel, listas, formatação condicional e fórmulas <code>SUMIFS</code> já calculadas.</p></div>
+        <div class="card"><h3>Sem sobrescrever à mão</h3><p>O <code>dados.json</code> é a fonte da verdade; a planilha é sempre gerada a partir dele.</p></div>
+      </div>
+    </section>
+
+    <section id="tecnologias">
+      <h2>Tecnologias</h2>
+      <p class="sub">&nbsp;</p>
+      <div class="tech-wrap"><table class="tech">
+        <tr><th>Camada</th><th>Tecnologia</th><th>Para quê</th></tr>
+        <tr><td>Desktop</td><td>Electron</td><td>Janela, menu e acesso à pasta de dados, com janela isolada (<code>contextIsolation</code> e <code>sandbox</code>).</td></tr>
+        <tr><td>Interface</td><td>HTML, CSS e JavaScript puro</td><td>Telas sem framework; gráficos em SVG.</td></tr>
+        <tr><td>Empacotamento</td><td>electron-builder</td><td>Executável portátil (<code>.exe</code>) que não precisa de instalação.</td></tr>
+        <tr><td>Armazenamento</td><td>Arquivo JSON local</td><td>Banco de dados simples, com escrita atômica.</td></tr>
+        <tr><td>Planilha</td><td>Gerador próprio de .xlsx</td><td>Office Open XML + ZIP escritos à mão.</td></tr>
+        <tr><td>Runtime</td><td>Node.js</td><td>Processo principal e ferramentas de build.</td></tr>
+      </table></div>
+    </section>
+
+    <section id="usar">
+      <h2>Como usar</h2>
+      <p class="sub">Requisito: Node.js (versão LTS) no Windows.</p>
+<pre><span class="c"># instalar as dependências</span>
+npm install
+
+<span class="c"># abrir o app em modo de teste</span>
+npm start
+
+<span class="c"># gerar o executável portátil: dist/Painel-da-Casa.exe</span>
+npm run build</pre>
+      <div class="two" style="margin-top:16px">
+        <div class="card"><h3>Onde ficam os dados</h3><ul class="clean"><li><code>...\OneDrive\Documentos\Contas a Pagar</code> (ou Documentos, sem OneDrive)</li><li><code>dados.json</code>: o banco de dados</li><li><code>CONTAS_.xlsx</code>: gerada sozinha; só para consultar</li><li>Menu Arquivo: escolher outra pasta</li></ul></div>
+        <div class="card"><h3>Limitações</h3><ul class="clean"><li>Edições feitas direto no Excel não voltam para o app</li><li>Lançar ao mesmo tempo em dois computadores pode gerar conflito do OneDrive</li><li>Sem assinatura digital: o Windows pode mostrar o aviso do SmartScreen</li><li>Os conselhos são gerais, não são recomendação financeira personalizada</li></ul></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Privacidade</h2>
+      <div class="card"><p>Não há servidor, conta, login nem telemetria. Os dados nunca saem do computador, a não ser pela pasta sincronizada que você escolher. O <code>.gitignore</code> impede o envio de <code>dados.json</code> e <code>CONTAS_.xlsx</code> ao repositório, e os dados de exemplo do projeto são todos fictícios.</p></div>
+    </section>
+  </main>
+
+  <footer>
+    Painel da Casa · desenvolvido com apoio do <a href="https://claude.ai">Claude</a> (Anthropic) · <a href="https://github.com/GuilhermeFelisberto12/painel-da-casa">código no GitHub</a>
+  </footer>
+</div>
+</body>
+</html>
